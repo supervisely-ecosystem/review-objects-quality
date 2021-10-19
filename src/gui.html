@@ -1,7 +1,13 @@
 
 <div>
 
-<sly-image-slider :data="data.example1.data" />
+<sly-grid-gallery :content="data.perClass.content" :options="data.perClass.options" style="width: 100%">
+                    <template v-slot:card-footer="{ annotation }">
+                        <div class="mt5" style="text-align: center">
+                            <el-tag type="primary">{{annotation.title}}</el-tag>
+                        </div>
+                    </template>
+                </sly-grid-gallery>
 
 
 </div>
