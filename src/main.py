@@ -2,6 +2,7 @@ import supervisely_lib as sly
 import functools
 import globals as g
 from supervisely_lib.app.widgets.compare_gallery import CompareGallery
+from create_gallery import CreateGallery
 
 
 def send_error_data(func):
@@ -30,16 +31,18 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
 
     images = api.image.get_list(dataset_info.id)
     image_ids = [image_info.id for image_info in images]
+    images_urls = [image_info.full_storage_url for image_info in images]
+    images_names = [image_info.name for image_info in images]
     ann_infos = api.annotation.download_batch(g.DATASET_ID, image_ids)
     anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
 
-    gallery = CompareGallery(g.task_id, g.api, 'data.perClass', meta)
-    gallery.set_left(title='image 1', ann=anns[0],
-                              image_url=api.image.get_info_by_id(image_ids[0]).full_storage_url)
-    gallery.set_right(title='image 2', ann=anns[0],
-                               image_url=api.image.get_info_by_id(image_ids[0]).full_storage_url)
-    gallery.update()
+    col_number = 3
 
+    full_gallery = CreateGallery(g.task_id, g.api, 'data.perClass', meta, col_number)
+    for image_name, ann, image_url in zip(images_names, anns, images_urls):
+        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
+
+    full_gallery.update()
 
 
 def main():
