@@ -11,5 +11,5 @@ WORKSPACE_ID = int(os.environ['context.workspaceId'])
 PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
 DATASET_ID = int(os.environ['modal.state.slyDatasetId'])
 
-col_number = 2
+col_number = 3
 

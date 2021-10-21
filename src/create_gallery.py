@@ -4,7 +4,7 @@ from supervisely_lib.api.api import Api
 from supervisely_lib.annotation.annotation import Annotation
 
 
-class CreateGallery:
+class Gallery:
 
     def __init__(self, task_id, api: Api, v_model, project_meta: ProjectMeta, col_number: int):
         self._task_id = task_id
@@ -29,7 +29,11 @@ class CreateGallery:
     def update_project_meta(self, project_meta: ProjectMeta):
         self._project_meta = project_meta.clone()
 
-    def _set_item(self, title, image_url, ann: Union[Annotation, dict] = None):
+    def set_item(self, title, image_url, ann: Union[Annotation, dict] = None, col_index = None):
+
+        if col_index is not None:
+            if col_index <=0 or col_index > self.col_number:
+                raise ValueError("Column number is not correct, check your input data")
 
         res_ann = Annotation((1,1))
         if ann is not None:
@@ -38,11 +42,7 @@ class CreateGallery:
             else:
                 res_ann = ann.clone()
 
-        self._data[title] = (image_url, res_ann)
-
-
-    def set_item(self, title, image_url, ann: Union[Annotation, dict] = None):
-        self._set_item(title, image_url, ann)
+        self._data[title] = (image_url, res_ann, col_index)
 
     def _get_item_annotation(self, name):
         return {
@@ -66,35 +66,23 @@ class CreateGallery:
 
         annotations = {}
         layout = []
-        curr_col = []
-        odd_image = 0
-        number_of_pairs = None
 
-        if len(self._data) < self.col_number * 2 and len(self._data) > self.col_number:
-            number_of_pairs = len(self._data) - self.col_number
-            imgs_in_col = 2
-        elif len(self._data) < self.col_number:
-            imgs_in_col = 1
-        else:
-            imgs_in_col = len(self._data) // self.col_number
-            odd_image = len(self._data) % self.col_number
+        for _ in range(self.col_number):
+            layout.append([])
 
-        for curr_data_name, curr_url_ann in self._data.items():
+        index_in_layout = 0
+
+        for curr_data_name, curr_url_ann_index in self._data.items():
             annotations[curr_data_name] = self._get_item_annotation(curr_data_name)
-            if len(curr_col) != imgs_in_col:
-                curr_col.append(curr_data_name)
-            else:
-                layout.append(curr_col)
-                curr_col = [curr_data_name]
-                if number_of_pairs:
-                    number_of_pairs -= 1
-                    if number_of_pairs == 0:
-                        imgs_in_col = 1
 
-        if len(curr_col) != 0 and odd_image == 0:
-            layout.append(curr_col)
-        else:
-            layout[0].extend(curr_col)
+            curr_col_index = curr_url_ann_index[2]
+            if curr_col_index is not None:
+                layout[curr_col_index - 1].append(curr_data_name)
+            else:
+                if index_in_layout == self.col_number:
+                    index_in_layout = 0
+                layout[index_in_layout].append(curr_data_name)
+                index_in_layout += 1
 
         return {
             "content": {

@@ -1,7 +1,7 @@
 import supervisely_lib as sly
 import functools
 import globals as g
-from create_gallery import CreateGallery
+from create_gallery import Gallery
 
 
 def send_error_data(func):
@@ -28,16 +28,22 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
     meta = sly.ProjectMeta.from_json(meta_json)
     dataset_info = api.dataset.get_info_by_id(g.DATASET_ID)
 
-    images = api.image.get_list(dataset_info.id)
+    images = api.image.get_list(dataset_info.id, sort="name")
     image_ids = [image_info.id for image_info in images]
     images_urls = [image_info.full_storage_url for image_info in images]
     images_names = [image_info.name for image_info in images]
     ann_infos = api.annotation.download_batch(g.DATASET_ID, image_ids)
     anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
 
-    full_gallery = CreateGallery(g.task_id, g.api, 'data.perClass', meta, g.col_number)
+    full_gallery = Gallery(g.task_id, g.api, 'data.perClass', meta, g.col_number)
     for image_name, ann, image_url in zip(images_names, anns, images_urls):
-        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
+        if image_name == 'image_05.jpg' or image_name == 'image_11.jpg':
+            full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=3)
+            continue
+        if image_name == 'image_02.jpg':
+            full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=2)
+            continue
+        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=1)
 
     full_gallery.update()
 
