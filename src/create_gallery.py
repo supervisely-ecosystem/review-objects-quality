@@ -1,4 +1,5 @@
 from typing import Union
+import supervisely_lib as sly
 from supervisely_lib.project.project_meta import ProjectMeta
 from supervisely_lib.api.api import Api
 from supervisely_lib.annotation.annotation import Annotation
@@ -44,6 +45,17 @@ class Gallery:
 
         self._data[title] = (image_url, res_ann, col_index)
 
+
+    def set_item_by_id(self, image_id, with_ann = True, col_index = None):
+        image_info = self._api.image.get_info_by_id(image_id)
+        if with_ann:
+            ann_info = self._api.annotation.download(image_id)
+            ann = sly.Annotation.from_json(ann_info.annotation, self._project_meta)
+        else:
+            ann = None
+
+        self.set_item(image_info.name, image_info.full_storage_url, ann, col_index)
+
     def _get_item_annotation(self, name):
         return {
             "url": self._data[name][0],
@@ -66,11 +78,10 @@ class Gallery:
 
         annotations = {}
         layout = []
+        index_in_layout = 0
 
         for _ in range(self.col_number):
             layout.append([])
-
-        index_in_layout = 0
 
         for curr_data_name, curr_url_ann_index in self._data.items():
             annotations[curr_data_name] = self._get_item_annotation(curr_data_name)
