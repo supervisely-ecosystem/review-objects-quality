@@ -37,10 +37,10 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
 
     full_gallery = Gallery(g.task_id, g.api, 'data.perClass', meta, g.col_number)
 
-    for i in range(1, 5):
-        full_gallery.set_item_by_id(image_ids[i], col_index=2)
-    full_gallery.set_item_by_id(image_ids[0], col_index=1)
-    full_gallery.set_item_by_id(image_ids[7], col_index=3)
+    # for i in range(1, 5):
+    #     full_gallery.set_item_by_id(image_ids[i], col_index=2)
+    # full_gallery.set_item_by_id(image_ids[0], col_index=1)
+    # full_gallery.set_item_by_id(image_ids[7], col_index=3)
 
     # for image_name, ann, image_url in zip(images_names, anns, images_urls):
     #     if image_name == 'image_05.jpg' or image_name == 'image_11.jpg':
@@ -50,6 +50,9 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
     #         full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=2)
     #         continue
     #     full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=1)
+
+    for image_name, ann, image_url in zip(images_names, anns, images_urls):
+        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
 
     full_gallery.update()
 
