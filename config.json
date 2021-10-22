@@ -7,8 +7,6 @@
   "description": "Visualize objects quality",
   "docker_image": "supervisely/base-py-sdk:6.1.80",
   "main_script": "src/main.py",
-  "modal_template": "src/modal.html",
-  "modal_template_state": {"state.columnsNumber":  2},
   "gui_template": "src/gui.html",
   "task_location": "workspace_tasks",
   "icon": "https://img.icons8.com/fluent/100/000000/lab-items.png",

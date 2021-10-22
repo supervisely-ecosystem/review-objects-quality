@@ -18,43 +18,98 @@ def send_error_data(func):
     return wrapper
 
 
+def get_first_last_page(current_page, possible_pages_count):
+    if current_page != 1:
+        is_first_page = False
+    else:
+        is_first_page = True
+
+    if current_page != possible_pages_count:
+        is_last_page = False
+    else:
+        is_last_page = True
+
+    return is_first_page, is_last_page
+
+
+def update_gallery_by_page(current_page, state):
+
+    cols = state['cols']
+    images_per_page = state['rows']
+    possible_pages_count = len(g.image_ids) // images_per_page
+    if len(g.image_ids) % images_per_page != 0:
+        possible_pages_count += 1
+
+    is_first_page, is_last_page = get_first_last_page(current_page, possible_pages_count)
+
+    full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols)
+
+    curr_images_names = g.images_names[images_per_page * (current_page - 1):images_per_page * current_page]
+    curr_anns = g.anns[images_per_page * (current_page - 1):images_per_page * current_page]
+    curr_images_urls = g.images_urls[images_per_page * (current_page - 1):images_per_page * current_page]
+
+    for idx, (image_name, ann, image_url) in enumerate(zip(curr_images_names, curr_anns, curr_images_urls)):
+        if idx == images_per_page:
+            break
+        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
+
+    full_gallery.update()
+
+    fields = [
+        {"field": "state.galleryInitialized", "payload": True},
+        {"field": "state.galleryPage", "payload": current_page},
+        {"field": "state.galleryIsFirstPage", "payload": is_first_page},
+        {"field": "state.galleryIsLastPage", "payload": is_last_page},
+        {"field": "state.galleryMaxPage", "payload": possible_pages_count}
+    ]
+    g.api.app.set_fields(g.task_id, fields)
+
+
+@g.my_app.callback("next_page")
+@sly.timeit
+@g.my_app.ignore_errors_and_show_dialog_window()
+def next_page(api: sly.Api, task_id, context, state, app_logger):
+    current_page = state['galleryPage']
+    update_gallery_by_page(current_page + 1, state)
+
+
+@g.my_app.callback("previous_page")
+@sly.timeit
+@g.my_app.ignore_errors_and_show_dialog_window()
+def next_page(api: sly.Api, task_id, context, state, app_logger):
+    current_page = state['galleryPage']
+    update_gallery_by_page(current_page - 1, state)
+
+
 @g.my_app.callback("test_compary_gallery")
 @sly.timeit
 @send_error_data
 def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
 
-    project_info = api.project.get_info_by_id(g.PROJECT_ID)
-    meta_json = api.project.get_meta(project_info.id)
-    meta = sly.ProjectMeta.from_json(meta_json)
-    dataset_info = api.dataset.get_info_by_id(g.DATASET_ID)
+    if state is None:
+        images_per_page = 1
+        payload = False
+        current_page = 1
+    else:
+        current_page = state['galleryPage']
+        payload = True
+        images_per_page = state['rows']
+        update_gallery_by_page(current_page, state)
 
-    images = api.image.get_list(dataset_info.id, sort="name")
-    image_ids = [image_info.id for image_info in images]
-    images_urls = [image_info.full_storage_url for image_info in images]
-    images_names = [image_info.name for image_info in images]
-    ann_infos = api.annotation.download_batch(g.DATASET_ID, image_ids)
-    anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
+    possible_pages_count = len(g.image_ids) // images_per_page
+    if len(g.image_ids) % images_per_page != 0:
+        possible_pages_count += 1
 
-    full_gallery = Gallery(g.task_id, g.api, 'data.perClass', meta, g.col_number)
+    is_first_page, is_last_page = get_first_last_page(current_page, possible_pages_count)
 
-    # for i in range(1, 5):
-    #     full_gallery.set_item_by_id(image_ids[i], col_index=2)
-    # full_gallery.set_item_by_id(image_ids[0], col_index=1)
-    # full_gallery.set_item_by_id(image_ids[7], col_index=3)
-
-    # for image_name, ann, image_url in zip(images_names, anns, images_urls):
-    #     if image_name == 'image_05.jpg' or image_name == 'image_11.jpg':
-    #         full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=3)
-    #         continue
-    #     if image_name == 'image_02.jpg':
-    #         full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=2)
-    #         continue
-    #     full_gallery.set_item(title=image_name, ann=ann, image_url=image_url, col_index=1)
-
-    for image_name, ann, image_url in zip(images_names, anns, images_urls):
-        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
-
-    full_gallery.update()
+    fields = [
+        {"field": "state.galleryInitialized", "payload": payload},
+        {"field": "state.galleryPage", "payload": current_page},
+        {"field": "state.galleryIsFirstPage", "payload": is_first_page},
+        {"field": "state.galleryIsLastPage", "payload": is_last_page},
+        {"field": "state.galleryMaxPage", "payload": possible_pages_count}
+    ]
+    g.api.app.set_fields(g.task_id, fields)
 
 
 def main():

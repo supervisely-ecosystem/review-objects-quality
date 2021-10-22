@@ -11,5 +11,14 @@ WORKSPACE_ID = int(os.environ['context.workspaceId'])
 PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
 DATASET_ID = int(os.environ['modal.state.slyDatasetId'])
 
-col_number = int(os.environ['modal.state.columnsNumber'])
+project_info = api.project.get_info_by_id(PROJECT_ID)
+meta_json = api.project.get_meta(project_info.id)
+meta = sly.ProjectMeta.from_json(meta_json)
+dataset_info = api.dataset.get_info_by_id(DATASET_ID)
 
+images = api.image.get_list(dataset_info.id, sort="name")
+image_ids = [image_info.id for image_info in images]
+images_urls = [image_info.full_storage_url for image_info in images]
+images_names = [image_info.name for image_info in images]
+ann_infos = api.annotation.download_batch(DATASET_ID, image_ids)
+anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
