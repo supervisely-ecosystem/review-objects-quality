@@ -27,9 +27,6 @@ class Gallery:
         }
         self._options_initialized = False
 
-    def update_project_meta(self, project_meta: ProjectMeta):
-        self._project_meta = project_meta.clone()
-
     def set_item(self, title, image_url, ann: Union[Annotation, dict] = None, col_index = None):
 
         if col_index is not None:
