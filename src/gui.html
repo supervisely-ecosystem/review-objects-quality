@@ -41,11 +41,11 @@
                         style="font-size: 17px;">Go to:
                 </el-tag>
 
-                <el-input-number name="Input page number"
+                <el-input name="Input page number"
                           class="ml15"
-                          v-model="state.input" :min="1"
-                          @change="command('test_compary_gallery')">
-                </el-input-number>
+                          v-model="state.input"
+                          @change="command('test_compary_gallery')"
+                          style="width: 100px"></el-input>
 
                 <el-tag type="gray" class="ml15"
                         style="font-size: 17px;">current page: {{ state.galleryPage }}/{{ state.galleryMaxPage }}
