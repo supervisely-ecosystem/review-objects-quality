@@ -60,7 +60,8 @@ def update_gallery_by_page(current_page, state):
         {"field": "state.galleryPage", "payload": current_page},
         {"field": "state.galleryIsFirstPage", "payload": is_first_page},
         {"field": "state.galleryIsLastPage", "payload": is_last_page},
-        {"field": "state.galleryMaxPage", "payload": possible_pages_count}
+        {"field": "state.galleryMaxPage", "payload": possible_pages_count},
+        {"field": "state.input", "payload": current_page}
     ]
     g.api.app.set_fields(g.task_id, fields)
 
@@ -87,11 +88,15 @@ def next_page(api: sly.Api, task_id, context, state, app_logger):
 def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
 
     if state is None:
-        images_per_page = 1
+        images_per_page = 10
         payload = False
         current_page = 1
     else:
-        current_page = state['galleryPage']
+        go_to_page = state.get('input')
+        if go_to_page is not None:
+            current_page = int(go_to_page)
+        else:
+            current_page = state['galleryPage']
         payload = True
         images_per_page = state['rows']
         update_gallery_by_page(current_page, state)
@@ -107,7 +112,8 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
         {"field": "state.galleryPage", "payload": current_page},
         {"field": "state.galleryIsFirstPage", "payload": is_first_page},
         {"field": "state.galleryIsLastPage", "payload": is_last_page},
-        {"field": "state.galleryMaxPage", "payload": possible_pages_count}
+        {"field": "state.galleryMaxPage", "payload": possible_pages_count},
+        {"field": "state.input", "payload": current_page}
     ]
     g.api.app.set_fields(g.task_id, fields)
 

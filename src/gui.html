@@ -6,10 +6,10 @@
           :collapsed.sync="state.collapsed5"
           ref="step5"
 >
-    <sly-field title="Number of images on page" description="Number of images on page">
+    <sly-field title="Number of images on page">
         <el-input-number v-model="state.rows" :min="1" :max="100"></el-input-number>
     </sly-field>
-    <sly-field title="Number of columns on page" description="Number of columns on page">
+    <sly-field title="Number of columns on page">
         <el-input-number v-model="state.cols" :min="1" :max="10"></el-input-number>
     </sly-field>
     <el-button type="primary" class="regular"
@@ -36,6 +36,16 @@
                            style="width: 160px">
                     <i class="el-icon-arrow-right el-icon-right ml10"></i>
                 </el-button>
+
+                <el-tag type="gray" class="ml15"
+                        style="font-size: 17px;">Go to:
+                </el-tag>
+
+                <el-input-number name="Input page number"
+                          class="ml15"
+                          v-model="state.input" :min="1"
+                          @change="command('test_compary_gallery')">
+                </el-input-number>
 
                 <el-tag type="gray" class="ml15"
                         style="font-size: 17px;">current page: {{ state.galleryPage }}/{{ state.galleryMaxPage }}
