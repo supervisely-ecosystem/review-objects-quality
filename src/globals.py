@@ -22,3 +22,7 @@ images_urls = [image_info.full_storage_url for image_info in images]
 images_names = [image_info.name for image_info in images]
 ann_infos = api.annotation.download_batch(DATASET_ID, image_ids)
 anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
+
+images_on_page = 10
+columns_on_page = 2
+first_page = 1

@@ -87,19 +87,14 @@ def next_page(api: sly.Api, task_id, context, state, app_logger):
 @send_error_data
 def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
 
-    if state is None:
-        images_per_page = 1
-        payload = False
-        current_page = 1
+    go_to_page = state.get('input')
+    if go_to_page is not None:
+        current_page = int(go_to_page)
     else:
-        go_to_page = state.get('input')
-        if go_to_page is not None:
-            current_page = int(go_to_page)
-        else:
-            current_page = state['galleryPage']
-        payload = True
-        images_per_page = state['rows']
-        update_gallery_by_page(current_page, state)
+        current_page = state['galleryPage']
+    payload = True
+    images_per_page = state['rows']
+    update_gallery_by_page(current_page, state)
 
     max_pages_count = len(g.image_ids) // images_per_page
     if len(g.image_ids) % images_per_page != 0:
@@ -123,8 +118,9 @@ def main():
         "context.teamId": g.TEAM_ID
     })
 
-    g.my_app.run(initial_events=[{"command": "test_compary_gallery"}])
+    state = {'galleryPage': g.first_page, 'rows': g.images_on_page, 'cols': g.columns_on_page}
 
+    g.my_app.run(state=state, initial_events=[{"state": state, "command": "test_compary_gallery"}])
 
 
 if __name__ == "__main__":
