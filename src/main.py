@@ -54,8 +54,6 @@ def update_gallery_by_page(current_page, state):
     curr_images_ids = g.image_ids[images_per_page * (current_page - 1):images_per_page * current_page]
     curr_anns = [get_ann_by_id(image_id, g.cache_dir) for image_id in curr_images_ids]
 
-    #curr_anns = g.anns[images_per_page * (current_page - 1):images_per_page * current_page]
-
     for idx, (image_name, ann, image_url) in enumerate(zip(curr_images_names, curr_anns, curr_images_urls)):
         if idx == images_per_page:
             break
@@ -67,7 +65,9 @@ def update_gallery_by_page(current_page, state):
         {"field": "state.galleryPage", "payload": current_page},
         {"field": "state.galleryMaxPage", "payload": max_pages_count},
         {"field": "state.input", "payload": current_page},
-        {"field": "state.maxImages", "payload": len(g.image_ids)}
+        {"field": "state.maxImages", "payload": len(g.image_ids)},
+        {"field": "state.rows", "payload": images_per_page},
+        {"field": "state.cols", "payload": cols}
     ]
     g.api.app.set_fields(g.task_id, fields)
 

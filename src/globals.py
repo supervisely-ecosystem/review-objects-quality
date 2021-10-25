@@ -31,8 +31,6 @@ mkdir(cache_dir)
 cache = Cache(directory=cache_dir)
 cache_item_expire_time = 600  # seconds
 
-#anns = [sly.Annotation.from_json(ann_info.annotation, meta) for ann_info in ann_infos]
-
 images_on_page = 5
 columns_on_page = 2
 first_page = 1
