@@ -27,11 +27,15 @@
                   :current-page.sync="state.input"
                   layout="prev, pager, next, jumper"
                   :page-size="state.rows"
-                  :total="state.maxPages">
+                  :total="state.maxImages">
                 </el-pagination>
 
                 <el-tag type="gray" class="ml15"
                         style="font-size: 17px;">current page: {{ state.galleryPage }}/{{ state.galleryMaxPage }}
+                </el-tag>
+
+                <el-tag type="gray" class="ml15"
+                        style="font-size: 17px;">total number of images: {{ state.maxImages }}
                 </el-tag>
 
             </div>
