@@ -18,20 +18,6 @@ def send_error_data(func):
     return wrapper
 
 
-def get_first_last_page(current_page, max_pages_count):
-    if current_page != 1:
-        is_first_page = False
-    else:
-        is_first_page = True
-
-    if current_page != max_pages_count:
-        is_last_page = False
-    else:
-        is_last_page = True
-
-    return is_first_page, is_last_page
-
-
 def update_gallery_by_page(current_page, state):
 
     cols = state['cols']
@@ -39,8 +25,6 @@ def update_gallery_by_page(current_page, state):
     max_pages_count = len(g.image_ids) // images_per_page
     if len(g.image_ids) % images_per_page != 0:
         max_pages_count += 1
-
-    is_first_page, is_last_page = get_first_last_page(current_page, max_pages_count)
 
     full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols)
 
@@ -51,17 +35,15 @@ def update_gallery_by_page(current_page, state):
     for idx, (image_name, ann, image_url) in enumerate(zip(curr_images_names, curr_anns, curr_images_urls)):
         if idx == images_per_page:
             break
-        full_gallery.set_item(title=image_name, ann=ann, image_url=image_url)
+        full_gallery.add_item(title=image_name, ann=ann, image_url=image_url)
 
     full_gallery.update()
 
     fields = [
-        {"field": "state.galleryInitialized", "payload": True},
         {"field": "state.galleryPage", "payload": current_page},
-        {"field": "state.galleryIsFirstPage", "payload": is_first_page},
-        {"field": "state.galleryIsLastPage", "payload": is_last_page},
         {"field": "state.galleryMaxPage", "payload": max_pages_count},
-        {"field": "state.input", "payload": current_page}
+        {"field": "state.input", "payload": current_page},
+        {"field": "state.maxPages", "payload": len(g.image_ids)}
     ]
     g.api.app.set_fields(g.task_id, fields)
 
@@ -92,7 +74,6 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
         current_page = int(go_to_page)
     else:
         current_page = state['galleryPage']
-    payload = True
     images_per_page = state['rows']
     update_gallery_by_page(current_page, state)
 
@@ -100,15 +81,11 @@ def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
     if len(g.image_ids) % images_per_page != 0:
         max_pages_count += 1
 
-    is_first_page, is_last_page = get_first_last_page(current_page, max_pages_count)
-
     fields = [
-        {"field": "state.galleryInitialized", "payload": payload},
         {"field": "state.galleryPage", "payload": current_page},
-        {"field": "state.galleryIsFirstPage", "payload": is_first_page},
-        {"field": "state.galleryIsLastPage", "payload": is_last_page},
         {"field": "state.galleryMaxPage", "payload": max_pages_count},
-        {"field": "state.input", "payload": current_page}
+        {"field": "state.input", "payload": current_page},
+        {"field": "state.maxPages", "payload": len(g.image_ids)}
     ]
     g.api.app.set_fields(g.task_id, fields)
 

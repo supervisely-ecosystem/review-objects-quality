@@ -7,7 +7,8 @@ from supervisely_lib.annotation.annotation import Annotation
 
 class Gallery:
 
-    def __init__(self, task_id, api: Api, v_model, project_meta: ProjectMeta, col_number: int):
+    def __init__(self, task_id, api: Api, v_model, project_meta: ProjectMeta, col_number: int, enable_zoom=True,
+                 sync_views=True, show_preview=False, selectable=False, opacity=0.5, show_opacity_header=True):
         self._task_id = task_id
         self._api = api
         self._v_model = v_model
@@ -18,16 +19,16 @@ class Gallery:
             raise ValueError("Columns number must be integer, not {}".format(type(self.col_number).__name__))
 
         self._options = {
-            "enableZoom": True,
-            "syncViews": True,
-            "showPreview": False,
-            "selectable": False,
-            "opacity": 0.5,
-            "showOpacityInHeader": True
+            "enableZoom": enable_zoom,
+            "syncViews": sync_views,
+            "showPreview": show_preview,
+            "selectable": selectable,
+            "opacity": opacity,
+            "showOpacityInHeader": show_opacity_header
         }
         self._options_initialized = False
 
-    def set_item(self, title, image_url, ann: Union[Annotation, dict] = None, col_index = None):
+    def add_item(self, title, image_url, ann: Union[Annotation, dict] = None, col_index = None):
 
         if col_index is not None:
             if col_index <=0 or col_index > self.col_number:
@@ -43,7 +44,7 @@ class Gallery:
         self._data[title] = (image_url, res_ann, col_index)
 
 
-    def set_item_by_id(self, image_id, with_ann = True, col_index = None):
+    def add_item_by_id(self, image_id, with_ann = True, col_index = None):
         image_info = self._api.image.get_info_by_id(image_id)
         if with_ann:
             ann_info = self._api.annotation.download(image_id)
@@ -51,7 +52,7 @@ class Gallery:
         else:
             ann = None
 
-        self.set_item(image_info.name, image_info.full_storage_url, ann, col_index)
+        self.add_item(image_info.name, image_info.full_storage_url, ann, col_index)
 
     def _get_item_annotation(self, name):
         return {

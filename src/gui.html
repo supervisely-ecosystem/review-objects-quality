@@ -15,36 +15,20 @@
                @click="command('test_compary_gallery');"
     >Get gallery
     </el-button>
-    <div v-if="state.galleryInitialized">
+    <div>
         </br>
         <hr>
         <sly-field title="" class="mt10">
             </br>
             <div class="fflex mb15">
-                <el-button type="primary"
-                           class="regular"
-                           @click="command('previous_page');"
-                           :disabled="state.galleryIsFirstPage"
-                           style="width: 160px">
-                    <i class="el-icon-arrow-left el-icon-left"></i>
-                </el-button>
 
-                <el-button type="primary" class="regular"
-                           @click="command('next_page');"
-                           :disabled="state.galleryIsLastPage"
-                           style="width: 160px">
-                    <i class="el-icon-arrow-right el-icon-right ml10"></i>
-                </el-button>
-
-                <el-tag type="gray" class="ml15"
-                        style="font-size: 17px;">Go to:
-                </el-tag>
-
-                <el-input name="Input page number"
-                          class="ml15"
-                          v-model="state.input"
-                          @change="command('test_compary_gallery')"
-                          style="width: 100px"></el-input>
+                <el-pagination
+                  @current-change="command('test_compary_gallery')"
+                  :current-page.sync="state.input"
+                  layout="prev, pager, next, jumper"
+                  :page-size="state.rows"
+                  :total="state.maxPages">
+                </el-pagination>
 
                 <el-tag type="gray" class="ml15"
                         style="font-size: 17px;">current page: {{ state.galleryPage }}/{{ state.galleryMaxPage }}
