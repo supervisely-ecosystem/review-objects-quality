@@ -1,4 +1,8 @@
 
+<!--<pre>-->
+<!--  {{ JSON.stringify(data, undefined, 2) }}-->
+<!--</pre>-->
+
 <sly-card title="Visualizations"
           subtitle="Grid gallery for test"
           :options="{collapsable: true}"
@@ -42,6 +46,7 @@
 
 
             <sly-grid-gallery
+                    v-if="data.perClass"
                     :content="data.perClass.content"
                     :options="data.perClass.options">
                 <template v-slot:card-footer="{ annotation }">

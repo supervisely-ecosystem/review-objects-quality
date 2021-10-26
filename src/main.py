@@ -105,8 +105,9 @@ def main():
     })
 
     state = {'galleryPage': g.first_page, 'rows': g.images_on_page, 'cols': g.columns_on_page}
+    data = {'perClass':None}
 
-    g.my_app.run(state=state, initial_events=[{"state": state, "command": "test_compary_gallery"}])
+    g.my_app.run(state=state, data=data, initial_events=[{"state": state, "command": "test_compary_gallery"}])
 
 
 if __name__ == "__main__":
