@@ -52,7 +52,10 @@
                 <template v-slot:card-footer="{ annotation }">
                 <div class="mt5" style="text-align: center">
                    <el-tag type="primary">{{annotation.title}}</el-tag>
+                        <el-tag v-if="state.with_info" type="primary">{{annotation.objects}}</el-tag>
+                    <el-tag v-if="state.with_info" type="primary">{{annotation.labelers}}</el-tag>
                 </div>
+
                 </template>
             </sly-grid-gallery>
         </sly-field>

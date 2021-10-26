@@ -22,7 +22,6 @@ def send_error_data(func):
 
 def get_ann_by_id(id, save_path):
     if g.cache.get(id) is None:
-
         ann_info = g.api.annotation.download(id)
         ann_json = ann_info.annotation
         ann_json_name = get_file_name(ann_info.image_name) + '.json'
@@ -46,7 +45,7 @@ def update_gallery_by_page(current_page, state):
     if len(g.image_ids) % images_per_page != 0:
         max_pages_count += 1
 
-    full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols)
+    full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols, g.with_info)
 
     curr_images_names = g.images_names[images_per_page * (current_page - 1):images_per_page * current_page]
     curr_images_urls = g.images_urls[images_per_page * (current_page - 1):images_per_page * current_page]
@@ -67,7 +66,8 @@ def update_gallery_by_page(current_page, state):
         {"field": "state.input", "payload": current_page},
         {"field": "state.maxImages", "payload": len(g.image_ids)},
         {"field": "state.rows", "payload": images_per_page},
-        {"field": "state.cols", "payload": cols}
+        {"field": "state.cols", "payload": cols},
+        {"field": "state.with_info", "payload": g.with_info}
     ]
     g.api.app.set_fields(g.task_id, fields)
 

@@ -22,7 +22,6 @@ images = api.image.get_list(dataset_info.id, sort="name")
 image_ids = [image_info.id for image_info in images]
 images_urls = [image_info.full_storage_url for image_info in images]
 images_names = [image_info.name for image_info in images]
-ann_infos = api.annotation.download_batch(DATASET_ID, image_ids)
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
@@ -36,4 +35,4 @@ columns_on_page = 2
 first_page = 1
 old_input = None
 old_rows = None
-old_cols = None
+with_info = True
