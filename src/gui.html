@@ -19,6 +19,13 @@
                @click="command('test_compary_gallery');"
     >Get gallery
     </el-button>
+
+    <el-button type="primary" class="regular"
+               @click="command('zoom_to_figure');"
+    >Zoom to figure
+    </el-button>
+
+
     <div>
         </br>
         <hr>
@@ -39,7 +46,7 @@
                 </el-tag>
 
                 <el-tag type="gray" class="ml15"
-                        style="font-size: 17px;">total number of images: {{ state.maxImages }}
+                        style="font-size: 17px;">total number of images in dataset: {{ state.maxImages }}
                 </el-tag>
 
             </div>
