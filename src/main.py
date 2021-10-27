@@ -39,7 +39,6 @@ def get_ann_by_id(id, save_path):
 
 
 def update_gallery_by_page(current_page, state):
-    class_name = 'lemon'
 
     cols = state['cols']
     images_per_page = state['rows']
@@ -58,8 +57,7 @@ def update_gallery_by_page(current_page, state):
     for idx, (image_name, ann, image_url) in enumerate(zip(curr_images_names, g.curr_anns, curr_images_urls)):
         if idx == images_per_page:
             break
-        #g.full_gallery.add_item(title=image_name, ann=ann, image_url=image_url)
-        g.full_gallery.add_item_by_class_name(title=image_name, ann=ann, image_url=image_url, class_name=class_name, col_index=1)
+        g.full_gallery.add_item(title=image_name, ann=ann, image_url=image_url)
 
     g.full_gallery.update()
 
@@ -75,19 +73,19 @@ def update_gallery_by_page(current_page, state):
     g.api.app.set_fields(g.task_id, fields)
 
 
-@g.my_app.callback("zoom_to_figure")
-@sly.timeit
-@send_error_data
-def zoom_to_figure(api: sly.Api, task_id, context, state, app_logger):
-    crop_padding = {
-        "top": "{}%".format(g.crop),
-        "left": "{}%".format(g.crop),
-        "right": "{}%".format(g.crop),
-        "bottom": "{}%".format(g.crop)
-    }
-    temp_ds_info = api.dataset.create(g.PROJECT_ID, 'temp_ds', change_name_if_conflict=True)
-    g.full_gallery.zoom_to_figures(temp_ds_info.id, crop_padding)
-    api.dataset.remove(temp_ds_info.id)
+# @g.my_app.callback("zoom_to_figure")
+# @sly.timeit
+# @send_error_data
+# def zoom_to_figure(api: sly.Api, task_id, context, state, app_logger):
+#     crop_padding = {
+#         "top": "{}%".format(g.crop),
+#         "left": "{}%".format(g.crop),
+#         "right": "{}%".format(g.crop),
+#         "bottom": "{}%".format(g.crop)
+#     }
+#     temp_ds_info = api.dataset.create(g.PROJECT_ID, 'temp_ds', change_name_if_conflict=True)
+#     g.full_gallery.zoom_to_figures(temp_ds_info.id, crop_padding)
+#     api.dataset.remove(temp_ds_info.id)
 
 
 @g.my_app.callback("test_compary_gallery")

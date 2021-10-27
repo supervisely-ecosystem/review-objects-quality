@@ -30,7 +30,7 @@ mkdir(cache_dir)
 cache = Cache(directory=cache_dir)
 cache_item_expire_time = 600  # seconds
 
-images_on_page = 3
+images_on_page = 10
 columns_on_page = 2
 first_page = 1
 old_input = None
