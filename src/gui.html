@@ -52,23 +52,13 @@
                 <template v-slot:card-footer="{ annotation }">
                 <div class="mt5" style="text-align: center">
                    <el-tag type="primary">{{annotation.title}}</el-tag>
-                        <el-tag v-if="state.with_info" type="primary">{{annotation.objects}}</el-tag>
-                    <el-tag v-if="state.with_info" type="primary">{{annotation.labelers}}</el-tag>
-                </div>
 
+                    <div v-for="v,k in annotation.info" style="word-break: break-all;">
+                        <b style="color: #777777;">{{k}}</b>: {{v}}
+                    </div>
+                </div>
                 </template>
             </sly-grid-gallery>
         </sly-field>
     </div>
 </sly-card>
-
-
-<!--<div>-->
-<!--<sly-grid-gallery :content="data.perClass.content" :options="data.perClass.options" style="width: 100%">-->
-<!--                    <template v-slot:card-footer="{ annotation }">-->
-<!--                        <div class="mt5" style="text-align: center">-->
-<!--                            <el-tag type="primary">{{annotation.title}}</el-tag>-->
-<!--                        </div>-->
-<!--                    </template>-->
-<!--                </sly-grid-gallery>-->
-<!--</div>-->
