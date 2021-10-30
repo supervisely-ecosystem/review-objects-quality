@@ -1,8 +1,4 @@
 
-<!--<pre>-->
-<!--  {{ JSON.stringify(data, undefined, 2) }}-->
-<!--</pre>-->
-
 <sly-card title="Visualizations"
           subtitle="Grid gallery for test"
           :options="{collapsable: true}"
@@ -52,6 +48,10 @@
             </div>
 
 
+            <pre>
+
+            </pre>
+
             <sly-grid-gallery
                     v-if="data.perClass"
                     :content="data.perClass.content"
@@ -66,6 +66,8 @@
                 </div>
                 </template>
             </sly-grid-gallery>
+
         </sly-field>
     </div>
 </sly-card>
+

@@ -46,7 +46,7 @@ def update_gallery_by_page(current_page, state):
     if len(g.image_ids) % images_per_page != 0:
         max_pages_count += 1
 
-    g.full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols)
+    g.full_gallery = Gallery(g.task_id, g.api, 'data.perClass', g.meta, cols, with_info=g.with_info)
 
     curr_images_names = g.images_names[images_per_page * (current_page - 1):images_per_page * current_page]
     curr_images_urls = g.images_urls[images_per_page * (current_page - 1):images_per_page * current_page]
@@ -71,21 +71,6 @@ def update_gallery_by_page(current_page, state):
         {"field": "state.with_info", "payload": g.with_info}
     ]
     g.api.app.set_fields(g.task_id, fields)
-
-
-# @g.my_app.callback("zoom_to_figure")
-# @sly.timeit
-# @send_error_data
-# def zoom_to_figure(api: sly.Api, task_id, context, state, app_logger):
-#     crop_padding = {
-#         "top": "{}%".format(g.crop),
-#         "left": "{}%".format(g.crop),
-#         "right": "{}%".format(g.crop),
-#         "bottom": "{}%".format(g.crop)
-#     }
-#     temp_ds_info = api.dataset.create(g.PROJECT_ID, 'temp_ds', change_name_if_conflict=True)
-#     g.full_gallery.zoom_to_figures(temp_ds_info.id, crop_padding)
-#     api.dataset.remove(temp_ds_info.id)
 
 
 @g.my_app.callback("test_compary_gallery")
