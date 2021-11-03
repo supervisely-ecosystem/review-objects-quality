@@ -1,5 +1,6 @@
 <div align="center" markdown>
-<img src="https://i.imgur.com/TslAtO8.png"/>
+<img src="https://i.imgur.com/jjtOwR3.png"/>
+
 
 # Thumbnails preview
 
@@ -37,8 +38,9 @@ The app create and visualize images gallery from dataset. User can define some s
 3. Once app is started, it will appear in workspace tasks, to open the app click `Open` button
 
 <div align="center" markdown>
-<img src="https://i.imgur.com/8DemHS7.png"/>
+<img src="https://i.imgur.com/L0OXAXI.png"/>
 </div>
+
 
 # How To Use
 
