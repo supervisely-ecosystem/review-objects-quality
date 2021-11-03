@@ -22,17 +22,17 @@
 
 ## Overview
 
-The app crops objects of selected classes in images project and creates a new project. User can define some crop settings - for example, padding, resize and what to do with original labels - keep or ignore. 
+The app create and visualize images gallery from dataset. User can define some settings - number or images on page and number of columns on page. 
 
 # How To Run 
 
-1. Add [Crop objects on images](https://ecosystem.supervise.ly/apps/crop-objects-on-image) to your team from Ecosystem.
+1. Add [Thumbnails preview](https://ecosystem.supervise.ly/apps/test-compare-gallery) to your team from Ecosystem.
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/crop-objects-on-image" src="https://i.imgur.com/wZiMUWn.png" width="450px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/crop-objects-on-image" src="https://i.imgur.com/IQw99fp.png" width="450px" style='padding-bottom: 20px'/>  
 
-2. Run app from the context menu of **Images Project**:
+2. Run app from the context menu of **Images Dataset**:
 
-<img src="https://i.imgur.com/cgaP76g.png" width="100%"/>
+<img src="https://i.imgur.com/b7x2hpP.png" width="100%"/>
 
 3. Once app is started, it will appear in workspace tasks, to open the app click `Open` button
 
@@ -42,11 +42,11 @@ The app crops objects of selected classes in images project and creates a new pr
 
 # How To Use
 
-1. Define settings
-2. Press “Preview” button to see results on random image
-3. Press “Crop all objects” button to create a new project with cropped objects
-4. App shuts down automatically
+1. Define number of images on page
+2. Define number of columns on page
+3. Press “Get gallery” button to preview gallery
 
 <div align="center" markdown>
-<img src="https://i.imgur.com/r2E6LTe.png"/>
+<img src="https://i.imgur.com/A3kPFC1.jpg"/>
 </div>
+

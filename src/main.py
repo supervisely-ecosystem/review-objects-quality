@@ -1,7 +1,7 @@
 import supervisely_lib as sly
 import functools, os
 import globals as g
-#from create_gallery import Gallery
+from create_gallery import Gallery
 from supervisely_lib.io.fs import silent_remove, get_file_name
 from supervisely_lib.io.json import dump_json_file
 from supervisely_lib.app.widgets.create_gallery import Gallery

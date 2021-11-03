@@ -8,8 +8,9 @@ from supervisely_lib.annotation.annotation import Annotation
 class Gallery:
 
     def __init__(self, task_id, api: Api, v_model, project_meta: ProjectMeta, col_number: int, with_info=False,
-                 enable_zoom=True,
-                 sync_views=True, show_preview=False, selectable=False, opacity=0.5, show_opacity_header=True):
+                 enable_zoom=False, resize_on_zoom=False,
+                 sync_views=False, show_preview=True, selectable=False, opacity=0.5, show_opacity_header=True,
+                 fillRectangle=False, borderWidth=3):
         self._task_id = task_id
         self._api = api
         self._v_model = v_model
@@ -23,10 +24,13 @@ class Gallery:
         self._options = {
             "enableZoom": enable_zoom,
             "syncViews": sync_views,
+            "resizeOnZoom": resize_on_zoom,
             "showPreview": show_preview,
             "selectable": selectable,
             "opacity": opacity,
-            "showOpacityInHeader": show_opacity_header
+            "showOpacityInHeader": show_opacity_header,
+            "fillRectangle": fillRectangle,
+            "borderWidth": borderWidth
         }
         self._options_initialized = False
 
@@ -53,9 +57,7 @@ class Gallery:
                 if label.geometry.labeler_login not in labelers_cnt:
                     labelers_cnt.append(label.geometry.labeler_login)
             preview_data["labelers"] = len(labelers_cnt)
-
             self._data[title].append(preview_data)
-
 
     def add_item_by_id(self, image_id, with_ann = True, col_index = None):
         image_info = self._api.image.get_info_by_id(image_id)
@@ -67,14 +69,13 @@ class Gallery:
 
         self.add_item(image_info.name, image_info.full_storage_url, ann, col_index)
 
-    def _get_item_annotation(self, name, with_info=False):
+    def _get_item_annotation(self, name):
         if self.with_info:
             return {
                 "url": self._data[name][0],
                 "figures": [label.to_json() for label in self._data[name][1].labels],
                 "title": name,
-                "objects": "objects: {}".format(self._data[name][3]["objects"]),
-                "labelers": "labelers: {}".format(self._data[name][3]["labelers"])
+                "info": self._data[name][3]
             }
         else:
             return {
@@ -83,16 +84,33 @@ class Gallery:
                 "title": name,
             }
 
-    def update(self, options=True):
+    def update(self, options=True, need_zoom=False):
         if len(self._data) == 0:
             raise ValueError("Items list is empty")
-
-        gallery_json = self.to_json()
+        if need_zoom:
+            gallery_json = self._zoom_to_figure()
+        else:
+            gallery_json = self.to_json()
         if options is True or self._options_initialized is False:
+            if need_zoom:
+                self._options["resizeOnZoom"] = True
             self._api.task.set_field(self._task_id, self._v_model, gallery_json)
             self._options_initialized = True
         else:
             self._api.task.set_field(self._task_id, f"{self._v_model}.content", gallery_json["content"])
+
+    def _zoom_to_figure(self, zoom_factor=1.2):
+        gallery_json = self.to_json()
+        items = self._data.items()
+        zoom_to_figure_name = "zoomToFigure"
+        for item in items:
+            for figure in gallery_json["content"]["annotations"][item[0]]["figures"]:
+                zoom_params = {
+                    "figureId": figure["id"],
+                    "factor": zoom_factor
+                }
+                gallery_json["content"]["annotations"][item[0]][zoom_to_figure_name] = zoom_params
+        return gallery_json
 
     def to_json(self):
 
