@@ -1,34 +1,29 @@
 
-<sly-card title="Visualizations"
-          subtitle="Grid gallery for test"
-          :options="{collapsable: true}"
-          :collapsed.sync="state.collapsed5"
-          ref="step5"
->
+<sly-card title="Grid gallery">
+
+    <el-tag type="gray" class="ml15"
+        style="font-size: 17px;">Total number of images in dataset: {{ state.maxImages }}
+    </el-tag>
+
+    <br>
+    </br>
+
+    <div class="fflex mb15">
     <sly-field title="Number of images on page">
-        <el-input-number v-model="state.rows" :min="1" :max="100"></el-input-number>
+        <el-input-number v-model="state.rows" :min="1" :max="300"></el-input-number>
     </sly-field>
-    <sly-field title="Number of columns on page">
-        <el-input-number v-model="state.cols" :min="1" :max="100"></el-input-number>
+    <sly-field title="Number of columns on page" style="margin-left: 10px">
+        <el-input-number v-model="state.cols" :min="1" :max="10"></el-input-number>
     </sly-field>
-    <el-button type="primary" class="regular"
-               @click="command('test_compary_gallery');"
-    >Get gallery
+    <el-button type="primary" class="regular" style="margin-left: 15px"
+               @click="command('review_gallery');">Get gallery
     </el-button>
-
-    <el-button type="primary" class="regular"
-               @click="command('zoom_to_figure');"
-    >Zoom to figure
-    </el-button>
-
+    </div>
 
     <div>
-        </br>
         <hr>
         <sly-field title="" class="mt10">
-            </br>
             <div class="fflex mb15">
-
                 <el-pagination
                   @current-change="command('update_page')"
                   :current-page.sync="state.input"
@@ -36,21 +31,7 @@
                   :page-size="state.rows"
                   :total="state.maxImages">
                 </el-pagination>
-
-                <el-tag type="gray" class="ml15"
-                        style="font-size: 17px;">current page: {{ state.galleryPage }}/{{ state.galleryMaxPage }}
-                </el-tag>
-
-                <el-tag type="gray" class="ml15"
-                        style="font-size: 17px;">total number of images in dataset: {{ state.maxImages }}
-                </el-tag>
-
             </div>
-
-
-            <pre>
-
-            </pre>
 
             <sly-grid-gallery
                     v-if="data.perClass"
@@ -66,6 +47,17 @@
                 </div>
                 </template>
             </sly-grid-gallery>
+
+            <br>
+            </br>
+
+            <el-pagination
+                  @current-change="command('update_page')"
+                  :current-page.sync="state.input"
+                  layout="prev, pager, next, jumper"
+                  :page-size="state.rows"
+                  :total="state.maxImages">
+            </el-pagination>
 
         </sly-field>
     </div>

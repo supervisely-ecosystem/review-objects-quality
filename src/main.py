@@ -73,10 +73,10 @@ def update_gallery_by_page(current_page, state):
     g.api.app.set_fields(g.task_id, fields)
 
 
-@g.my_app.callback("test_compary_gallery")
+@g.my_app.callback("review_gallery")
 @sly.timeit
 @send_error_data
-def test_compary_gallery(api: sly.Api, task_id, context, state, app_logger):
+def review_gallery(api: sly.Api, task_id, context, state, app_logger):
     g.old_input = state['galleryPage']
     go_to_page = state.get('input')
     if go_to_page is not None:
@@ -108,7 +108,7 @@ def main():
     state = {'galleryPage': g.first_page, 'rows': g.images_on_page, 'cols': g.columns_on_page}
     data = {'perClass':None}
 
-    g.my_app.run(state=state, data=data, initial_events=[{"state": state, "command": "test_compary_gallery"}])
+    g.my_app.run(state=state, data=data, initial_events=[{"state": state, "command": "review_gallery"}])
 
 
 if __name__ == "__main__":
