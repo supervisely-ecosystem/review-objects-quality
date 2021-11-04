@@ -25,6 +25,7 @@
         <sly-field title="" class="mt10">
             <div class="fflex mb15">
                 <el-pagination
+                  v-if="state.alreadyUpload"
                   @current-change="command('update_page')"
                   :current-page.sync="state.input"
                   layout="prev, pager, next, jumper"
@@ -52,6 +53,7 @@
             </br>
 
             <el-pagination
+                  v-if="state.alreadyUpload"
                   @current-change="command('update_page')"
                   :current-page.sync="state.input"
                   layout="prev, pager, next, jumper"

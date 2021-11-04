@@ -68,7 +68,8 @@ def update_gallery_by_page(current_page, state):
         {"field": "state.maxImages", "payload": len(g.image_ids)},
         {"field": "state.rows", "payload": images_per_page},
         {"field": "state.cols", "payload": cols},
-        {"field": "state.with_info", "payload": g.with_info}
+        {"field": "state.with_info", "payload": g.with_info},
+        {"field": "state.alreadyUpload", "payload": True}
     ]
     g.api.app.set_fields(g.task_id, fields)
 
@@ -91,6 +92,10 @@ def review_gallery(api: sly.Api, task_id, context, state, app_logger):
 @sly.timeit
 @send_error_data
 def update_page(api: sly.Api, task_id, context, state, app_logger):
+    fields = [
+        {"field": "state.alreadyUpload", "payload": False}
+    ]
+    g.api.app.set_fields(g.task_id, fields)
     g.old_input = state['galleryPage']
     go_to_page = state.get('input')
     current_page = int(go_to_page)
