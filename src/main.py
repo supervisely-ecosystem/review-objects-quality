@@ -61,11 +61,18 @@ def update_gallery_by_page(current_page, state):
 
     g.full_gallery.update()
 
+    if g.DATASET_ID is not None:
+        ds_images = len(g.image_ids)
+    else:
+        ds_images = None
+
     fields = [
         {"field": "state.galleryPage", "payload": current_page},
         {"field": "state.galleryMaxPage", "payload": max_pages_count},
         {"field": "state.input", "payload": current_page},
         {"field": "state.maxImages", "payload": len(g.image_ids)},
+        {"field": "state.totalImages", "payload": g.total_images_in_project},
+        {"field": "state.dsImages", "payload": ds_images},
         {"field": "state.rows", "payload": images_per_page},
         {"field": "state.cols", "payload": cols},
         {"field": "state.with_info", "payload": g.with_info},
@@ -112,6 +119,13 @@ def main():
 
     state = {'galleryPage': g.first_page, 'rows': g.images_on_page, 'cols': g.columns_on_page}
     data = {'perClass':None}
+
+    data["projectId"] = g.project_info.id
+    data["projectName"] = g.project_info.name
+    data["projectPreviewUrl"] = g.api.image.preview_url(g.project_info.reference_image_url, 100, 100)
+    if g.DATASET_ID is not None:
+        data["datasetId"] = g.dataset_info.id
+        data["datasetName"] = g.dataset_info.name
 
     g.my_app.run(state=state, data=data, initial_events=[{"state": state, "command": "review_gallery"}])
 

@@ -11,17 +11,38 @@ task_id = my_app.task_id
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
 PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
-DATASET_ID = int(os.environ['modal.state.slyDatasetId'])
+DATASET_ID = os.environ.get('modal.state.slyDatasetId', None)
+
+if DATASET_ID is not None:
+    DATASET_ID = int(DATASET_ID)
+
+project = None
+datasets = None
+
+if DATASET_ID is not None:
+    dataset_info = api.dataset.get_info_by_id(DATASET_ID)
+    datasets = [dataset_info]
 
 project_info = api.project.get_info_by_id(PROJECT_ID)
+stats = api.project.get_stats(PROJECT_ID)
+total_images_in_project = stats['images']['total']['imagesInDataset']
+
+if datasets is None:
+    datasets = api.dataset.get_list(PROJECT_ID)
+
 meta_json = api.project.get_meta(project_info.id)
 meta = sly.ProjectMeta.from_json(meta_json)
-dataset_info = api.dataset.get_info_by_id(DATASET_ID)
+if len(meta.obj_classes) == 0:
+    raise ValueError("Where is no objects in input project(dataset)")
 
-images = api.image.get_list(dataset_info.id, sort="name")
-image_ids = [image_info.id for image_info in images]
-images_urls = [image_info.full_storage_url for image_info in images]
-images_names = [image_info.name for image_info in images]
+all_images = []
+for dataset in datasets:
+    images = api.image.get_list(dataset.id, sort="name")
+    all_images.extend(images)
+
+image_ids = [image_info.id for image_info in all_images]
+images_urls = [image_info.full_storage_url for image_info in all_images]
+images_names = [image_info.name for image_info in all_images]
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
