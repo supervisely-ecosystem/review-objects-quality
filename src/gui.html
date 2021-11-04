@@ -16,16 +16,16 @@
         <el-input-number v-model="state.cols" :min="1" :max="10"></el-input-number>
     </sly-field>
     <el-button type="primary" class="regular" style="margin-left: 15px"
-               @click="command('review_gallery');">Get gallery
+               @click="command('review_gallery');" ref="checkpoint">Get gallery
     </el-button>
     </div>
 
     <div>
         <hr>
-        <sly-field title="" class="mt10">
-            <div class="fflex mb15">
+        <sly-field title="" class="mt10" >
+            <div class="fflex mb15" style="justify-content: center;">
                 <el-pagination
-                  v-if="state.alreadyUpload"
+
                   @current-change="command('update_page')"
                   :current-page.sync="state.input"
                   layout="prev, pager, next, jumper"
@@ -37,7 +37,8 @@
             <sly-grid-gallery
                     v-if="data.perClass"
                     :content="data.perClass.content"
-                    :options="data.perClass.options">
+                    :options="data.perClass.options"
+                    v-loading="state.alreadyUpload">
                 <template v-slot:card-footer="{ annotation }">
                 <div class="mt5" style="text-align: center">
                    <el-tag type="primary">{{annotation.title}}</el-tag>
@@ -52,14 +53,15 @@
             <br>
             </br>
 
+            <div class="fflex mb15" style="justify-content: center;">
             <el-pagination
                   v-if="state.alreadyUpload"
-                  @current-change="command('update_page')"
+                  @current-change="command('update_page'); $nextTick(() => { $refs['checkpoint'].$el.scrollIntoView({behavior: 'smooth', block: 'start'}); })"
                   :current-page.sync="state.input"
                   layout="prev, pager, next, jumper"
                   :page-size="state.rows"
                   :total="state.maxImages">
-            </el-pagination>
+            </el-pagination></div>
 
         </sly-field>
     </div>
