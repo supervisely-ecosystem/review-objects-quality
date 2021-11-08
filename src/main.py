@@ -78,7 +78,16 @@ def update_gallery_by_page(current_page, state):
 @g.my_app.callback("init_gallery")
 @sly.timeit
 def init_gallery(api: sly.Api, task_id, context, state, app_logger):
-    current_page = g.first_page
+    # current_page = g.first_page
+    # update_gallery_by_page(current_page, state)
+
+    g.old_input = state['galleryPage']
+    go_to_page = state.get('input')
+    if go_to_page is not None:
+        current_page = int(go_to_page)
+    else:
+        current_page = state['galleryPage']
+
     update_gallery_by_page(current_page, state)
 
 
