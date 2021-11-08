@@ -1,7 +1,7 @@
 import supervisely_lib as sly
 import globals as g
-#from create_gallery import Gallery
-from supervisely_lib.app.widgets.create_gallery import Gallery
+from create_gallery import Gallery
+#from supervisely_lib.app.widgets.create_gallery import Gallery
 
 
 def get_ann_by_id(id):
