@@ -23,23 +23,18 @@
 
 ## Overview
 
-The app create and visualize images gallery from dataset. User can define some settings - number or images on page and number of columns on page. 
+The app create and visualize images gallery from dataset or project. User can define some settings - number or images on page and number of columns on page. 
 
 # How To Run 
 
 1. Add [Thumbnails preview](https://ecosystem.supervise.ly/apps/test-compare-gallery) to your team from Ecosystem.
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/crop-objects-on-image" src="https://i.imgur.com/IQw99fp.png" width="450px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/crop-objects-on-image" src="https://i.imgur.com/RfZZfBJ.png" width="450px" style='padding-bottom: 20px'/>  
 
-2. Run app from the context menu of **Images Dataset**:
+2. Run app from the context menu of **Images Dataset** or **Images Project**.
 
-<img src="https://i.imgur.com/b7x2hpP.png" width="100%"/>
+3. Once app is started, it will appear in workspace tasks, to open the app click `Open` button.
 
-3. Once app is started, it will appear in workspace tasks, to open the app click `Open` button
-
-<div align="center" markdown>
-<img src="https://i.imgur.com/L0OXAXI.png"/>
-</div>
 
 
 # How To Use
@@ -51,4 +46,3 @@ The app create and visualize images gallery from dataset. User can define some s
 <div align="center" markdown>
 <img src="https://i.imgur.com/A3kPFC1.jpg"/>
 </div>
-
