@@ -44,7 +44,7 @@ image_ids = [image_info.id for image_info in all_images]
 images_urls = [image_info.full_storage_url for image_info in all_images]
 images_names = [image_info.name for image_info in all_images]
 
-work_dir = os.path.join(my_app.data_dir, "work_dir")
+work_dir = os.path.join(my_app.cache_dir, "work_dir")
 mkdir(work_dir, True)
 cache_dir = os.path.join(work_dir, "diskcache")
 mkdir(cache_dir)
@@ -54,9 +54,9 @@ cache_item_expire_time = 600  # seconds
 images_on_page = 30
 columns_on_page = 5
 first_page = 1
-old_input = None
-old_rows = None
-with_info = True
+preview_input = None
+preview_rows = None
+preview_info = True
 full_gallery = None
 curr_images_ids = None
 curr_anns = None
