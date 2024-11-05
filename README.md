@@ -12,12 +12,12 @@
 
 
 
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/test-compare-gallery)
-[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/test-compare-gallery)
+[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/test-compare-gallery)
-[![views](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=views&label=views)](https://supervise.ly)
-[![used by teams](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=downloads&label=used%20by%20teams)](https://supervise.ly)
-[![runs](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=runs&label=runs&123)](https://supervise.ly)
+[![views](https://app.supervisely.com/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=views&label=views)](https://supervisely.com)
+[![used by teams](https://app.supervisely.com/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=downloads&label=used%20by%20teams)](https://supervisely.com)
+[![runs](https://app.supervisely.com/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/test-compare-gallery&counter=runs&label=runs&123)](https://supervisely.com)
 
 </div>
 
@@ -27,7 +27,7 @@ The app create and visualize images gallery from dataset or project. User can de
 
 # How To Run 
 
-1. Add [Thumbnails preview](https://ecosystem.supervise.ly/apps/test-compare-gallery) to your team from Ecosystem.
+1. Add [Thumbnails preview](https://ecosystem.supervisely.com/apps/test-compare-gallery) to your team from Ecosystem.
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/crop-objects-on-image" src="https://i.imgur.com/RfZZfBJ.png" width="450px" style='padding-bottom: 20px'/>  
 
